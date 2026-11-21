@@ -30,3 +30,14 @@ def test_groups():
     ]
     edges, groups = audit(rows)
     assert edges[0][2] == 1 and groups[0] == groups[1] and groups[2] != groups[3]
+
+
+def test_single_group_and_bad_threshold(tmp_path):
+    # One family only -> no non-empty holdout is possible, so export must refuse.
+    source = tmp_path / "one.csv"
+    source.write_text("id,text,split\n1,same words here,train\n2,same words here,test\n")
+    with pytest.raises(ValueError):
+        export(source, tmp_path / "out")
+    # A threshold outside (0, 1) is meaningless for Jaccard similarity.
+    with pytest.raises(ValueError):
+        audit([dict(id="1", text="a b c")], threshold=1.5)

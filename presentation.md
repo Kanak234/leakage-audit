@@ -1,3 +1,5 @@
+# Presentation — Leakage Audit
+
 1. I began with a CSV of labeled train and test examples.
 2. In audit.py I shingled text and retrieved candidates with MinHash.
 3. I checked the exact Jaccard score and exported shared phrases so a reviewer could verify the match.

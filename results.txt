@@ -3,20 +3,7 @@ MinHash {'detected': 60, 'missed': 0, 'false_pairs': 0}
 random residual cross-split families 18
 exact grouping residual cross-split families 12
 MinHash groups residual cross-split families 0
-C:\Users\kanak\Documents\Codex\2026-11-21\new-chat\work\adapters\Lib\site-packages\deepchecks\core\serialization\dataframe\html.py:16: UserWarning:
-
-pkg_resources is deprecated as an API. See https://setuptools.pypa.io/en/latest/pkg_resources.html. The pkg_resources package is slated for removal as early as 2025-11-30. Refrain from using this package or pin to Setuptools<81.
-
-C:\Users\kanak\Documents\Codex\2026-11-21\new-chat\work\adapters\Lib\site-packages\sklearn\metrics\_scorer.py:610: FutureWarning:
-
-The `needs_threshold` and `needs_proba` parameter are deprecated in version 1.4 and will be removed in 1.6. You can either let `response_method` be `None` or set it to `predict` to preserve the same behaviour.
-
-C:\Users\kanak\Documents\Codex\2026-11-21\new-chat\work\adapters\Lib\site-packages\deepchecks\tabular\checks\train_test_validation\train_test_samples_mix.py:85: FutureWarning:
-
-DataFrame.applymap has been deprecated. Use DataFrame.map instead.
-
 Deepchecks test rows overlapping 30 / 60
 Finding near_duplicate issues ...
-
 Audit complete. 60 issues found in the dataset.
 cleanlab TF-IDF {'detected': 30, 'missed': 30, 'false_pairs': 0}

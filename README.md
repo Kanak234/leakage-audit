@@ -5,6 +5,10 @@ Built by Kanak Prabhakar
 
 Identify overlapping text across evaluation splits and export independent text groups.
 
+![Demo: a duplicated record is caught and kept on one side of the split](assets/demo.gif)
+
+The demo shows real output. Records 1 and 2 are the same sentence, one in train and one in test. The audit reports the overlap and puts both in the same group, on the same side of the new split.
+
 ## Features and architecture
 Build three-word shingles, retrieve MinHash LSH candidates, verify exact Jaccard similarity, then union matching components before assigning groups to train or test.
 
@@ -14,7 +18,14 @@ flowchart LR
 ```
 
 ## Installation and usage
-From the extracted project directory, run `python -m pip install -r baselines.txt` in a Python 3.11+ virtual environment. After setup the analysis runs offline.
+There are two install levels, and the README used to mix them up:
+
+| You want | Install | Python |
+|---|---|---|
+| The audit tool and the core benchmark rows (random / exact hash / MinHash) | `python -m pip install -r requirements.txt` | 3.11+ |
+| The full benchmark, including the Deepchecks and cleanlab comparison rows | `python -m pip install -r baselines.txt` (includes requirements.txt) | 3.11 or 3.12 only. The pinned scikit-learn 1.5.2, pyarrow 16.1 and Deepchecks 0.19.1 have no Python 3.13 wheels. |
+
+After setup the analysis runs offline. Without the baseline packages, `bench.py` still prints the core rows and reports the adapters as unavailable.
 
 ```sh
 python audit.py example.csv audit-out
@@ -36,19 +47,13 @@ Input headers are id,text,split. Use unique IDs. Benchmark 60 seeded two-record 
 ## Limitations and roadmap
 Grouping can chain weakly related endpoints. Test fraction is by group, so large groups may skew row counts. Next evaluate labeled paraphrases.
 
-## Resume
-Accomplished duplicate-family separation as measured by TBD residual cross-split families by doing MinHash retrieval, exact Jaccard verification and group-aware splitting. Read the MinHash groups count from bench.py.
+## Resume line
+Accomplished leak-free train/test splits with 0 of 60 duplicate families crossing splits (random split: 18, exact-hash grouping: 12) and 60/60 near-duplicate pairs found with 0 false pairs, as measured by `bench.py` on 60 seeded families, by doing MinHash LSH retrieval, exact Jaccard verification and union-find group splitting.
 
-The evaluation uses 30 exact and 30 lightly edited pairs. These results characterize this fixture and feature representation. For the complete benchmark use Python 3.12 and the single install command above. The constant format_version field in the Deepchecks adapter preserves text equality.
+The evaluation uses 30 exact and 30 one-token-edited pairs, so it is an easy fixture. The numbers describe this fixture only. Paraphrases are the known gap (see Limitations). For the complete benchmark use Python 3.12 and `baselines.txt`. The constant format_version field in the Deepchecks adapter preserves text equality.
 
 ## Credits
 [datasketch](https://ekzhu.com/datasketch/), [Deepchecks](https://github.com/deepchecks/deepchecks), [cleanlab](https://github.com/cleanlab/cleanlab), [scikit-learn](https://scikit-learn.org/), [pytest](https://pytest.org/).
-
-## Publish
-Run in PowerShell 7 or Bash from the repository root.
-```sh
-git init -b main && git add . && git -c user.name="Kanak Prabhakar" -c user.email="kanakprabhakar72@gmail.com" commit -m "Add Leakage Audit" && gh repo create Kanak234/leakage-audit --public --source=. --remote=origin --push
-```
 
 ## Presentation
 
@@ -61,4 +66,4 @@ git init -b main && git add . && git -c user.name="Kanak Prabhakar" -c user.emai
 **Main limitation.** Word-shingle overlap can miss paraphrases and connect chains of weakly related texts.
 
 
-See edge-cases.md for tested inputs and tests-output.txt for actual Windows pytest output.
+See PRD.md, TRD.md and edge-cases.md for the design, and tests-output.txt / results.txt for the latest runs.
